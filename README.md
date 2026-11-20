@@ -25,6 +25,9 @@ not been changed compared to the original distribution.
 The repository https://github.com/LaTeX-Package-Repositories/msharpe
 coordinates the maintenance of the packages originally by Michael Sharpe.
 
+**ANY ISSUE CREATED HERE SHOULD CONTAIN A PING `@jfbu` SO THAT I
+GET THE NOTIFICATION**
+
 ## License
 
 <pre>
