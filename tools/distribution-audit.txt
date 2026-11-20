@@ -4,10 +4,9 @@ Unmapped TFM files: tcxbttz, tcxbttzsl, tcxttz, tcxttzsl, txttz
 Unreferenced encoding files: none
 Unreferenced Type 1 fonts: none
 T1: 120 mapped metrics
-  encoded slots without metrics: ((23, 'cwm'),)
-  encoded slots without outlines: ((23, 'cwm'),)
+  All encoded glyphs and metric advance widths agree.
 TS1: 20 mapped metrics
   All encoded glyphs and metric advance widths agree.
 Reference metrics compared: 145
 Reference Type 1 fonts compared: 6
-120 mapped metrics with discrepancies; 0 other errors.
+0 mapped metrics with discrepancies; 0 other errors.
