@@ -1,9 +1,9 @@
 /tcxDecEnc [
 %00
-  /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
-  /.notdef /.notdef /.notdef /cedilla /ogonek /quotesinglbase /endash /.notdef
+  /grave /acute /circumflex /tilde /dieresis /hungarumlaut /ring /caron
+  /breve /macron /dotaccent /cedilla /ogonek /quotesinglbase /endash /.notdef
 %10
-  /.notdef /.notdef /quotedblbase /.notdef /.notdef /.notdef /.notdef /.notdef
+  /.notdef /.notdef /quotedblbase /.notdef /.notdef /endash /emdash /.notdef
   /arrowleft /arrowright /tieaccentlowercase /tieaccentcapital /newtieaccentlowercase /newtieaccentcapital /.notdef /.notdef
 %20
   /blank /.notdef /.notdef /.notdef /dollar /.notdef /.notdef /quotesingle
@@ -24,13 +24,13 @@
   /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
   /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /tildelow /hyphendblchar
 %80
-  /asciibreve /asciicaron /.notdef /asciigravedbl /dagger /daggerdbl /bardbl /perthousand
+  /asciibreve /asciicaron /aciiacutedbl /asciigravedbl /dagger /daggerdbl /bardbl /perthousand
   /bullet /centigrade /dollaroldstyle /centoldstyle /florin /colonmonetary /won /naira
 %90
   /guarani /peso /lira /recipe /interrobang /interrobangdown /dong /trademark
   /pertenthousand /pilcrow /baht /numero /discount /estimated /openbullet /servicemark
 %A0
-  /.notdef /.notdef /cent /sterling /currency /yen /brokenbar /section
+  /guillbracketleft /guillbracketright /cent /sterling /currency /yen /brokenbar /section
   /asciidieresis /copyright /ordfeminine /copyleft /logicalnot /circledP /registered /asciimacron
 %B0
   /degree /plusminus /twosuperior /threesuperior /asciiacute /mu /paragraph /periodcentered

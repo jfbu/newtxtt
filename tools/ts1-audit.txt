@@ -1,25 +1,9 @@
 Checked 20 metric/vector/map combinations.
 Unencoded kernel-declared slots (20 metrics):
-    0  capitalgrave
-    1  capitalacute
-    2  capitalcircumflex
-    3  capitaltilde
-    4  capitaldieresis
-    5  capitalhungarumlaut
-    6  capitalring
-    7  capitalcaron
-    8  capitalbreve
-    9  capitalmacron
-   10  capitaldotaccent
-   21  texttwelveudash
-   22  textthreequartersemdash
    23  textcapitalcompwordmark
    31  textascendercompwordmark
-  130  textacutedbl
-  160  textlquill
-  161  textrquill
 newtcxtt: outlines unused by all five vectors:
-  aciiacutedbl, acute, breve, caron, circumflex, dieresis, dotaccent, emdash, grave, guillbracketleft, guillbracketright, hungarumlaut, macron, ring, tilde
+  
 newtcxbtt: outlines unused by all five vectors:
-  aciiacutedbl, acute, breve, caron, circumflex, dieresis, dotaccent, emdash, grave, guillbracketleft, guillbracketright, hungarumlaut, macron, ring, tilde
+  
 0 consistency errors.
