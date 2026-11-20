@@ -8,4 +8,6 @@ T1: 120 mapped metrics
   encoded slots without outlines: ((23, 'cwm'),)
 TS1: 20 mapped metrics
   All encoded glyphs and metric advance widths agree.
+Reference metrics compared: 145
+Reference Type 1 fonts compared: 6
 120 mapped metrics with discrepancies; 0 other errors.
