@@ -1,4 +1,5 @@
 newtxtt/README
+newtxtt/doc/newtxtt-1060-2026-11-20.md
 newtxtt/doc/newtxtt-doc.pdf
 newtxtt/doc/newtxtt-doc.tex
 newtxtt/enc/tcxAec.enc
