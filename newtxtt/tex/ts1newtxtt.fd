@@ -23,7 +23,7 @@
      <->ssub * newtxtt/m/n%
 }{}
 \DeclareFontShape{TS1}{newtxtt}{m}{sl}{	%slanted
-     <-> \newtxtt@@scale newtcxttsl\newtxtt@@fig%
+     <-> \newtxtt@@scale newtcxsl\newtxtt@@fig%
 }{}
 \DeclareFontShape{TS1}{newtxtt}{m}{it}{	%italic
      <->ssub * newtxtt/m/sl%
@@ -38,7 +38,7 @@
      <->ssub * newtxtt/b/n%
 }{}
 \DeclareFontShape{TS1}{newtxtt}{b}{sl}{	%bold slanted
-     <-> \newtxtt@@scale newtcxbttsl\newtxtt@@fig%
+     <-> \newtxtt@@scale newtcxbsl\newtxtt@@fig%
 }{}
 \DeclareFontShape{TS1}{newtxtt}{b}{it}{	%bold italic
      <->ssub * newtxtt/b/sl%
