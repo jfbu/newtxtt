@@ -3,8 +3,8 @@
   /grave /acute /circumflex /tilde /dieresis /hungarumlaut /ring /caron
   /breve /macron /dotaccent /cedilla /ogonek /quotesinglbase /endash /.notdef
 %10
-  /.notdef /.notdef /quotedblbase /.notdef /.notdef /endash /emdash /.notdef
-  /arrowleft /arrowright /tieaccentlowercase /tieaccentcapital /newtieaccentlowercase /newtieaccentcapital /.notdef /.notdef
+  /.notdef /.notdef /quotedblbase /.notdef /.notdef /endash /emdash /cwm
+  /arrowleft /arrowright /tieaccentlowercase /tieaccentcapital /newtieaccentlowercase /newtieaccentcapital /.notdef /cwm
 %20
   /blank /.notdef /.notdef /.notdef /dollar /.notdef /.notdef /quotesingle
   /.notdef /.notdef /asteriskcentered /.notdef /comma /hyphendbl /period /fraction

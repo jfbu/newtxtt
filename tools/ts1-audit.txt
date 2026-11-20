@@ -1,7 +1,5 @@
 Checked 20 metric/vector/map combinations.
 Unencoded kernel-declared slots (20 metrics):
-   23  textcapitalcompwordmark
-   31  textascendercompwordmark
 newtcxtt: outlines unused by all five vectors:
   
 newtcxbtt: outlines unused by all five vectors:
