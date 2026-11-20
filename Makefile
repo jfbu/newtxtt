@@ -4,14 +4,12 @@ sourcefiles := $(shell find newtxtt -type f)
 .PHONY: doc ctan checkfiles cleanbuild test original
 
 checkfiles:
-	@echo "Added files:"
-	@find newtxtt -type f | LC_ALL=C sort | LC_ALL=C comm -13 tools/file-list.txt -
-	@echo "Removed files:"
-	@find newtxtt -type f | LC_ALL=C sort | LC_ALL=C comm -23 tools/file-list.txt -
-	@echo '********************************'
-	@echo 'ATTENTION IF EXECUTING make ctan'
-	@echo 'ABOVE OUTPUT MUST HAVE CONFIRMED TOP-LEVEL newtxtt/ IS CLEAN'
-	@echo '********************************'
+	@hidden=$$(find newtxtt -name '.*' -print); \
+	if [ -n "$$hidden" ]; then \
+	    echo -e "Unexpected hidden entries:\n$$hidden\n" >&2; \
+	    exit 1; \
+	fi
+	@find newtxtt -type f | LC_ALL=C sort | diff -u tools/file-list.txt -
 
 original:
 	mkdir -p original
@@ -48,9 +46,13 @@ ctan: checkfiles test $(sourcefiles) ctanbuild/privacy.sh ctanbuild/dopdfdoc.sh
 	@echo 'Prepare the CTAN announcement, if any.'
 	@echo 'Execute .gettimestamps.sh to store the time-stamps,'
 	@echo 'then commit the current repertory state with the'
-	@echo 'announcement as commit message. DO NOT COMMIT THE'
-	@echo 'ctanbuild/newtxtt.zip.  For this, create a branch'
-	@echo 'which will be kept private and never pushed to GitHub.'
+	@echo 'announcement as commit message.'
+	@echo 'The next instructions are ONLY for the original creator'
+	@echo 'of the provisory github repository: They do not apply'
+	@echo 'to people having cloned this repo to their own namespace;'
+	@echo '==== DO NOT COMMIT THE ctanbuild/newtxtt.zip.'
+	@echo '==== Create a branch which will be kept private'
+	@echo '==== and never pushed to GitHub.'
 	@echo '********'
 
 test:
