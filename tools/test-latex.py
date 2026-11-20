@@ -142,8 +142,34 @@ def main():
                 for quotes in (False, True):
                     count += run_case(directory, env, family, zero, quotes, tests)
                     print(f'{family}, zerostyle={zero}, straightquotes={quotes}: passed', flush=True)
+        for family in ('newtxtt', 'newtxttz'):
+            test_direct_nfss(directory, env, family)
     print(f'{count - 140} TS1 command/shape checks, 120 T1 wordmark checks, '
-          '20 verbatim checks and 20 itemize checks passed.')
+          '20 verbatim checks, 20 itemize checks and 2 direct NFSS checks passed.')
+
+
+def test_direct_nfss(directory, env, family):
+    source = [r'\pdfmapfile{=newtxtt.map}', r'\input{glyphtounicode.tex}', r'\documentclass{article}',
+              r'\usepackage[TS1,T1]{fontenc}', r'\pdfgentounicode=1', r'\tracinglostchars=3',
+              r'\begin{document}', r'\shipout\hbox{\usefont{T1}{' + family + r'}{m}{n}\textcopyleft}',
+              r'\end{document}']
+    (directory / 'direct.tex').write_text('\n'.join(source) + '\n')
+    proc = subprocess.run(['pdflatex', '-halt-on-error', '-interaction=nonstopmode',
+                           '-recorder', 'direct.tex'], cwd=directory, env=env,
+                          stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+    if proc.returncode or re.search(r'Missing character|LaTeX Font Warning', proc.stdout):
+        raise RuntimeError(f'{family} direct NFSS\n' + proc.stdout)
+    inputs = (directory / 'direct.fls').read_text().splitlines()
+    if any(line.startswith('INPUT ') and Path(line[6:]).name == 'newtxtt.sty' for line in inputs):
+        raise RuntimeError('Direct NFSS test unexpectedly loaded newtxtt.sty')
+    for filename in ('t1' + family + '.fd', 'ts1' + family + '.fd'):
+        if not any(line.startswith('INPUT ') and Path(line[6:]).resolve() == ROOT / 'tex' / filename
+                   for line in inputs):
+            raise RuntimeError(f'{family}: did not load local {filename}')
+    page = PdfReader(directory / 'direct.pdf').pages[0]
+    if list(glyphs(page)) != [('newtcxtta', 171)] or page.extract_text().strip() != '🄯':
+        raise RuntimeError(f'{family}: incorrect direct NFSS copyleft glyph or Unicode')
+    print(f'{family}, direct NFSS: passed', flush=True)
 
 
 if __name__ == '__main__':

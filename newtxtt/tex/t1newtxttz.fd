@@ -1,6 +1,11 @@
 \ProvidesFile{t1newtxttz.fd}
     [2020/02/15  Font definitions for T1/newtxttz.]
 
+% Register full TS1 coverage even when newtxtt.sty is not loaded.
+\ifdefined\DeclareEncodingSubset
+    \DeclareEncodingSubset{TS1}{newtxttz}{0}%
+\fi
+
 \expandafter\ifx\csname newtxtt@scale\endcsname\relax
     \let\newtxtt@@scale\@empty
 \else
