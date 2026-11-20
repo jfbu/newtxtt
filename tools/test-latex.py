@@ -85,8 +85,11 @@ def run_case(directory, env, family, zero, quotes, tests):
     option = family + ',zerostyle=' + zero + (',straightquotes' if quotes else '')
     source = [r'\pdfmapfile{=newtxtt.map}', r'\input{glyphtounicode.tex}', r'\documentclass{article}',
               r'\usepackage[TS1,T1]{fontenc}', r'\usepackage[' + option + r']{newtxtt}',
-              r'\pdfgentounicode=1', r'\tracinglostchars=3', r'\begin{document}']
-    expected = []
+              r'\usepackage{upquote}', r'\pdfgentounicode=1', r'\tracinglostchars=3',
+              r'\begin{document}', r'\begingroup\catcode58=13\catcode61=13',
+              r'\shipout\hbox{\verb|`|}', r'\endgroup']
+    # The first TS1 use must be in verbatim, before any normal TS1 selection.
+    expected = [(r'\verb|`|', 'newtcxtt' + zero, 96, '`')]
     for series, shape, prefix in SHAPES:
         source.append(r'\normalfont\fontseries{' + series + r'}\fontshape{' + shape + r'}\selectfont')
         for label, expression, slot, unicode in tests:
@@ -139,7 +142,8 @@ def main():
                 for quotes in (False, True):
                     count += run_case(directory, env, family, zero, quotes, tests)
                     print(f'{family}, zerostyle={zero}, straightquotes={quotes}: passed', flush=True)
-    print(f'{count - 120} TS1 command/shape checks, 120 T1 wordmark checks and 20 itemize checks passed.')
+    print(f'{count - 140} TS1 command/shape checks, 120 T1 wordmark checks, '
+          '20 verbatim checks and 20 itemize checks passed.')
 
 
 if __name__ == '__main__':

@@ -7,9 +7,12 @@
   \ifdefined\newtxtt@ts1unicode@loaded\else
     \gdef\newtxtt@ts1unicode@loaded{}%
     \begingroup
+      % FD loading can occur in verbatim or other active-character contexts.
+      % Normalize the delimiters of \@tfor before tokenizing the loops.
+      \catcode61\space12\catcode58=12\relax
       \def\newtxtt@unicode#1#2{%
-        \@for\newtxtt@metric:=newtcxtt,newtcxsl,newtcxbtt,newtcxbsl\do{%
-          \@for\newtxtt@zero:=a,b,c,d,e\do{%
+        \@tfor\newtxtt@metric:={newtcxtt}{newtcxsl}{newtcxbtt}{newtcxbsl}\do{%
+          \@tfor\newtxtt@zero:=abcde\do{%
             \pdfglyphtounicode{tfm:\newtxtt@metric\newtxtt@zero/#1}{#2}}}}%
       % Spacing accents and punctuation (LaTeX TU encoding).
       \newtxtt@unicode{asciigrave}{0060}%
