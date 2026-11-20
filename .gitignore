@@ -1,4 +1,5 @@
 .auto
 /original/
 /ctanbuild/
+/CTAN/*.zip
 c01.md
