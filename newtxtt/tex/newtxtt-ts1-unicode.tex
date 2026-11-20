@@ -1,0 +1,57 @@
+\ProvidesFile{newtxtt-ts1-unicode.tex}[TS1 PDF Unicode mappings]
+
+% Register only when the engine provides pdfTeX's glyph mapping primitive.
+% Scope mappings to the companion TFM names, not to other fonts using the
+% same PostScript glyph names.  The five zero styles share these mappings.
+\ifdefined\pdfglyphtounicode
+  \ifdefined\newtxtt@ts1unicode@loaded\else
+    \gdef\newtxtt@ts1unicode@loaded{}%
+    \begingroup
+      \def\newtxtt@unicode#1#2{%
+        \@for\newtxtt@metric:=newtcxtt,newtcxsl,newtcxbtt,newtcxbsl\do{%
+          \@for\newtxtt@zero:=a,b,c,d,e\do{%
+            \pdfglyphtounicode{tfm:\newtxtt@metric\newtxtt@zero/#1}{#2}}}}%
+      % Spacing accents and punctuation (LaTeX TU encoding).
+      \newtxtt@unicode{asciigrave}{0060}%
+      \newtxtt@unicode{asciiacute}{00B4}%
+      \newtxtt@unicode{asciidieresis}{00A8}%
+      \newtxtt@unicode{asciimacron}{00AF}%
+      \newtxtt@unicode{asciibreve}{02D8}%
+      \newtxtt@unicode{asciicaron}{02C7}%
+      \newtxtt@unicode{aciiacutedbl}{02DD}% spelling in the PFB
+      \newtxtt@unicode{asciigravedbl}{02F5}%
+      \newtxtt@unicode{tildelow}{02F7}%
+      \newtxtt@unicode{guillbracketleft}{2045}%
+      \newtxtt@unicode{guillbracketright}{2046}%
+      \newtxtt@unicode{openbracketleft}{27E6}%
+      \newtxtt@unicode{openbracketright}{27E7}%
+      \newtxtt@unicode{hyphendbl}{2E40}%
+      \newtxtt@unicode{hyphendblchar}{2E40}%
+      \newtxtt@unicode{bardbl}{2016}% double vertical line, not parallel
+      % The ties have different placements, but the same character meaning.
+      \newtxtt@unicode{tieaccentlowercase}{0361}%
+      \newtxtt@unicode{tieaccentcapital}{0361}%
+      \newtxtt@unicode{newtieaccentlowercase}{0361}%
+      \newtxtt@unicode{newtieaccentcapital}{0361}%
+      % Currency, copyright and miscellaneous text companion symbols.
+      \newtxtt@unicode{baht}{0E3F}%
+      \newtxtt@unicode{naira}{20A6}%
+      \newtxtt@unicode{peso}{20B1}%
+      \newtxtt@unicode{guarani}{20B2}%
+      \newtxtt@unicode{circledP}{2117}%
+      \newtxtt@unicode{recipe}{211E}%
+      \newtxtt@unicode{servicemark}{2120}%
+      \newtxtt@unicode{discount}{2052}%
+      \newtxtt@unicode{pilcrow}{00B6}%
+      \newtxtt@unicode{bigcircle}{25EF}%
+      \newtxtt@unicode{blank}{2422}% TS1 blank, not T1 visible space
+      \newtxtt@unicode{born}{002A}% LaTeX TU convention
+      \newtxtt@unicode{died}{2020}% LaTeX TU convention
+      \newtxtt@unicode{married}{26AD}%
+      \newtxtt@unicode{divorced}{26AE}%
+      \newtxtt@unicode{copyleft}{1F12F}%
+      % No unambiguous Unicode equivalent for the decorative leaf.
+    \endgroup
+  \fi
+\fi
+\endinput

@@ -1,6 +1,8 @@
 \ProvidesFile{ts1newtxttz.fd}
 	[2024/03/03]
 
+\input{newtxtt-ts1-unicode.tex}
+
 \expandafter\ifx\csname newtxtt@scale\endcsname\relax
     \let\newtxtt@@scale\@empty
 \else
