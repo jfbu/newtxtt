@@ -1,0 +1,11 @@
+TFM files: 145; encoding vectors: 15; Type 1 fonts: 6
+Unique map entries: 140; direct FD selections: 160
+Unmapped TFM files: tcxbttz, tcxbttzsl, tcxttz, tcxttzsl, txttz
+Unreferenced encoding files: none
+Unreferenced Type 1 fonts: none
+T1: 120 mapped metrics
+  encoded slots without metrics: ((23, 'cwm'),)
+  encoded slots without outlines: ((23, 'cwm'),)
+TS1: 20 mapped metrics
+  All encoded glyphs and metric advance widths agree.
+120 mapped metrics with discrepancies; 0 other errors.
