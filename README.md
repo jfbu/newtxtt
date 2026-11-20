@@ -12,15 +12,15 @@ and forks this repository.
 
 The author did not have access to Michael's original development
 directories and let ChatGPT work directly on a `newtxtt.zip`
-downloaded from a CTAN mirror some days earlie.
+downloaded from a CTAN mirror some days earlier.
 
 People taking over maintenance should execute `make original`
 in their git clone so that `original/newtxtt/` contains the files
 of the `1.059 2024-03-12` distribution.  Or they can directly
 unzip the committed file `newtxtt-1.059-2024-03-12.zip`.
 This structure is needed for some of the tests triggered by
-`make test` which checked that the glyph metrics have not been
-changed compared to the original distribution.
+`make test` in particular checking that  the glyph metrics have
+not been changed compared to the original distribution.
 
 
 ## License

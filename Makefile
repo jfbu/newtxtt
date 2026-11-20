@@ -56,7 +56,6 @@ ctan: test $(sourcefiles) pdfdoc checkhiddenfiles
 	@echo 'CHECK ctanbuild/newtxtt-doc.fls FOR ANY INCONGRUITY.'
 	@echo 'Copy the newtxttt.zip to some other place for CTAN upload.'
 	@echo 'Rename the one in CTAN to hold the version number in its filename.'
-	@echo 'Add it to git control.'
 	@echo 'Prepare the CTAN announcement, if any.'
 	@echo 'Execute .gettimestamps.sh to store the time-stamps,'
 	@echo 'then commit the current repository state with the'

@@ -1,8 +1,12 @@
 This small package provides a means of accessing all features (plus scaling) of an extension of the txfont typewriter fonts as a typewriter font family to accompany any other chosen font packages. These are serifed typewriter faces that are taller and heavier than Latin Modern Typewriter and much heavier than Courier.
 
 
-Current version: 1.059, 2024-03-12
+Current version: 1.060, 2026-11-20
 
+Important notice: The package author, Michael Sharpe, has announced
+that he is stepping down as maintainer. A provisional repository
+has been set up at https://github.com/jfbu/newtxtt, which
+records the patches leading from version 1.059 to version 1.060.
 
 As the fonts on which these were based are licensed under GPL 3.0, so are the fonts in 
 this package. More specifically, the fonts in this package are covered by the GNU 
@@ -19,8 +23,10 @@ The support files are subject to the LaTeX Project Public License. See
 http://www.ctan.org/license/lppl1.3
 for the details of that license.
 
-Changes in version 1.059
-Added some missing entries in newtxtt.map affecting option zerostyle=e and straight quotes. (Thanks, Andre David Tinoco Mendes and Oliver Kopp.)
+Changes in version 1.060
+Correct TS1 font selection, fix missing T1 and TS1 character
+coverage, and improve Unicode text extraction from PDFs.
+For details, see doc/newtxtt-1060-2026-11-20.md.
 
 Changes in version 1.058
 1. Corrected some technical errors in the bold versions 

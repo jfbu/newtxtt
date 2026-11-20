@@ -1,0 +1,17 @@
+Release 1.060 of November 20, 2026
+
+Version 1.060 of newtxtt is a corrective release.  It fixes TS1
+font selection for both the monospaced and variable-width
+families, restores missing T1 and TS1 character coverage, and
+improves Unicode text extraction from PDFs produced by pdfTeX. The
+existing typeface designs are unchanged.  The repairs and their
+verification are documented in the file newtxtt-1060-2026-11-20.md
+included in the doc/ sub-directory of the distribution.
+
+All repairs were made by ChatGPT (OpenAI) on November 20, 2026.
+The package is currently unmaintained.  Please contact CTAN if you
+are interested in taking over its maintenance.  The PDF
+documentation includes a link to a GitHub repository that can be
+forked for future development.  The repository owner guided the AI
+in producing the patches but will not undertake future maintenance
+of the package.
