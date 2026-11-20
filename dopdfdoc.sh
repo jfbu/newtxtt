@@ -2,14 +2,12 @@
 
 set -e
 
-# echo "THIS \"$(pwd)\" SHOULD BE \"_newtxtt/ctanbuild\"" 
-
-if [[ "$PWD" != */_newtxtt/ctanbuild ]]; then
-    echo "Error: expected newtxtt/ctanbuild, got $PWD" >&2
+if [[ "$PWD" != */_newtxtt ]]; then
+    echo "Error: expected _newtxtt, got $PWD" >&2
     exit 1
 fi
 
-echo "Building pdf in ctanbuild/newtxtt/doc with TEXINPUTS=\".:..//:\" ..."
+echo "Building pdf in newtxtt/doc with TEXINPUTS=\".:..//:\" ..."
 
 cd newtxtt/doc
 

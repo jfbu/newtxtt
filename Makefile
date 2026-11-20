@@ -1,7 +1,7 @@
 SHELL := /bin/bash
 sourcefiles := $(shell find newtxtt -type f)
 
-.PHONY: doc ctan checkfiles cleanbuild test original
+.PHONY: pdfdoc ctan checkfiles cleanbuild test original
 
 checkfiles:
 	@hidden=$$(find newtxtt -name '.*' -print); \
@@ -12,19 +12,26 @@ checkfiles:
 	@find newtxtt -type f | LC_ALL=C sort | diff -u tools/file-list.txt -
 
 original:
+	rm -fr original
 	mkdir -p original
 	unzip -o newtxtt-1.059-2024-03-12.zip -d original
 
-ctan: checkfiles test $(sourcefiles) ctanbuild/privacy.sh ctanbuild/dopdfdoc.sh
+pdfdoc:
+	@echo '********'
+	@echo 'Producing newtxtt-doc.pdf in newtxtt/doc'
+	./dopdfdoc.sh
+
+ctan: checkfiles test $(sourcefiles) pdfdoc ctanbuild/privacy.sh
 	@echo 'Removing CTAN/newtxtt.zip if it exists (or not...).'
 	rm -fr CTAN/newtxtt.zip
 	@echo 'Removing all of ctanbuild/newtxtt'
 	rm -fr ctanbuild/newtxtt
 	rm -f  ctanbuild/newtxtt.zip
+	@echo 'Moving all files to ctanbuild/, the PDF doc is done'
 	cp -ar newtxtt ctanbuild/
 	@echo '********'
-	@echo 'Producing the PDF after having un-obfuscated this this person name'
-	cd ctanbuild && ./privacy.sh && ./dopdfdoc.sh
+	@echo 'Un-obfuscate the README regarding this person name'
+	cd ctanbuild && ./privacy.sh
 	@echo '********'
 	@echo 'removing all LaTeX build left-overs'
 	mv ctanbuild/newtxtt/doc/newtxtt-doc.{tex,pdf,fls} ctanbuild/
@@ -45,11 +52,11 @@ ctan: checkfiles test $(sourcefiles) ctanbuild/privacy.sh ctanbuild/dopdfdoc.sh
 	@echo 'CHECK ctanbuild/newtxtt-doc.fls FOR ANY INCONGRUITY.'
 	@echo 'Prepare the CTAN announcement, if any.'
 	@echo 'Execute .gettimestamps.sh to store the time-stamps,'
-	@echo 'then commit the current repertory state with the'
-	@echo 'announcement as commit message.'
+	@echo 'then commit the current repository state with the'
+	@echo 'announcement as commit message body.'
 	@echo 'The next instructions are ONLY for the original creator'
-	@echo 'of the provisory github repository: They do not apply'
-	@echo 'to people having cloned this repo to their own namespace;'
+	@echo 'of the provisory github repository: they do not apply'
+	@echo 'to people having cloned this repo to their own namespace.'
 	@echo '==== DO NOT COMMIT THE ctanbuild/newtxtt.zip.'
 	@echo '==== Create a branch which will be kept private'
 	@echo '==== and never pushed to GitHub.'
