@@ -22,6 +22,8 @@ This structure is needed for some of the tests triggered by
 `make test` in particular checking that  the glyph metrics have
 not been changed compared to the original distribution.
 
+The repository https://github.com/LaTeX-Package-Repositories/msharpe
+coordinates the maintenance of the packages originally by Michael Sharpe.
 
 ## License
 
