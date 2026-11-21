@@ -28,6 +28,45 @@ coordinates the maintenance of the packages originally by Michael Sharpe.
 **ANY ISSUE CREATED HERE SHOULD CONTAIN A PING `@jfbu` SO THAT I
 GET THE NOTIFICATION**
 
+## Installation
+
+First, execute `make CTAN/newtxtt.tds.zip`.
+
+To install the corrected version locally, execute from `CTAN/`:
+
+    unzip -o newtxtt.tds.zip -d "$(kpsewhich -var-value=TEXMFHOME)"
+
+If `newtxtt` is already installed and its font map enabled in your
+TeX Live distribution, no further action is required. The font map
+file is unchanged from version 1.059.
+
+Otherwise, enable the font map:
+
+    updmap-user --enable Map=newtxtt.map
+
+Be aware that running `updmap-user` creates personal font maps
+which take precedence over the system-generated ones.
+
+## Uninstallation
+
+If you enabled the font map manually during installation, disable
+it before removing the files:
+
+    updmap-user --disable newtxtt.map
+
+To remove the locally installed version:
+
+    cd "$(kpsewhich -var-value=TEXMFHOME)" &&
+    rm -rf tex/latex/newtxtt \
+           doc/fonts/newtxtt \
+           fonts/tfm/public/newtxtt \
+           fonts/type1/public/newtxtt \
+           fonts/enc/dvips/newtxtt \
+           fonts/map/dvips/newtxtt
+
+TeX Live will then revert to using its own installed version of
+`newtxtt`, if present.
+
 ## License
 
 <pre>
