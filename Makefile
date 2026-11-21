@@ -75,31 +75,30 @@ cleanbuild:
 	rm -fr ctanbuild/newtxtt
 
 # Build a TDS archive from the already validated CTAN archive.
-# set -eu: stop on command failure or expansion of an unset variable.
-# mktemp -d: create a fresh temporary directory.
-# trap ... EXIT: remove that temporary tree on shell exit, even on failure
-# (rm -rf: recursive removal without prompting).
+# rm -rf: remove the previous staging tree recursively, if present.
 # unzip -q -d: extract quietly into the specified directory.
 # mkdir -p: create parent directories as needed.
-# zip -X -r: omit extra file attributes and archive directories recursively.
+# zip -r: archive directories recursively, retaining timestamp metadata.
 # unzip -tq: test archive integrity quietly before moving it into place.
 CTAN/newtxtt.tds.zip: CTAN/newtxtt.zip
-	set -eu; \
-	tmp=$$(mktemp -d); \
-	trap 'rm -rf "$$tmp"' EXIT; \
-	unzip -q "$<" -d "$$tmp"; \
-	cd "$$tmp"; \
-	mkdir -p tex/latex doc/fonts \
-	    fonts/tfm/public fonts/type1/public \
-	    fonts/enc/dvips fonts/map/dvips; \
-	mv newtxtt/tex tex/latex/newtxtt; \
-	mv newtxtt/doc doc/fonts/newtxtt; \
-	mv newtxtt/tfm fonts/tfm/public/newtxtt; \
-	mv newtxtt/type1 fonts/type1/public/newtxtt; \
-	mv newtxtt/enc fonts/enc/dvips/newtxtt; \
-	mv newtxtt/map fonts/map/dvips/newtxtt; \
-	mv newtxtt/README doc/fonts/newtxtt/; \
-	rmdir newtxtt; \
-	zip -X -r newtxtt.tds.zip doc tex fonts; \
-	unzip -tq newtxtt.tds.zip; \
-	mv newtxtt.tds.zip "$(abspath $@)"
+	rm -rf ctanbuild/tds
+	mkdir -p ctanbuild/tds
+	unzip -q CTAN/newtxtt.zip -d ctanbuild/tds
+	mkdir -p ctanbuild/tds/tex/latex
+	mkdir -p ctanbuild/tds/doc/fonts
+	mkdir -p ctanbuild/tds/fonts/tfm/public
+	mkdir -p ctanbuild/tds/fonts/type1/public
+	mkdir -p ctanbuild/tds/fonts/enc/dvips
+	mkdir -p ctanbuild/tds/fonts/map/dvips
+	mv ctanbuild/tds/newtxtt/tex ctanbuild/tds/tex/latex/newtxtt
+	mv ctanbuild/tds/newtxtt/doc ctanbuild/tds/doc/fonts/newtxtt
+	mv ctanbuild/tds/newtxtt/tfm ctanbuild/tds/fonts/tfm/public/newtxtt
+	mv ctanbuild/tds/newtxtt/type1 ctanbuild/tds/fonts/type1/public/newtxtt
+	mv ctanbuild/tds/newtxtt/enc ctanbuild/tds/fonts/enc/dvips/newtxtt
+	mv ctanbuild/tds/newtxtt/map ctanbuild/tds/fonts/map/dvips/newtxtt
+	mv ctanbuild/tds/newtxtt/README ctanbuild/tds/doc/fonts/newtxtt/
+	rmdir ctanbuild/tds/newtxtt
+	cd ctanbuild/tds && zip -r newtxtt.tds.zip doc tex fonts
+	unzip -tq ctanbuild/tds/newtxtt.tds.zip
+	mv ctanbuild/tds/newtxtt.tds.zip CTAN/newtxtt.tds.zip
+	rm -rf ctanbuild/tds
