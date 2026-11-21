@@ -73,3 +73,33 @@ test:
 
 cleanbuild:
 	rm -fr ctanbuild/newtxtt
+
+# Build a TDS archive from the already validated CTAN archive.
+# set -eu: stop on command failure or expansion of an unset variable.
+# mktemp -d: create a fresh temporary directory.
+# trap ... EXIT: remove that temporary tree on shell exit, even on failure
+# (rm -rf: recursive removal without prompting).
+# unzip -q -d: extract quietly into the specified directory.
+# mkdir -p: create parent directories as needed.
+# zip -X -r: omit extra file attributes and archive directories recursively.
+# unzip -tq: test archive integrity quietly before moving it into place.
+CTAN/newtxtt.tds.zip: CTAN/newtxtt.zip
+	set -eu; \
+	tmp=$$(mktemp -d); \
+	trap 'rm -rf "$$tmp"' EXIT; \
+	unzip -q "$<" -d "$$tmp"; \
+	cd "$$tmp"; \
+	mkdir -p tex/latex doc/fonts \
+	    fonts/tfm/public fonts/type1/public \
+	    fonts/enc/dvips fonts/map/dvips; \
+	mv newtxtt/tex tex/latex/newtxtt; \
+	mv newtxtt/doc doc/fonts/newtxtt; \
+	mv newtxtt/tfm fonts/tfm/public/newtxtt; \
+	mv newtxtt/type1 fonts/type1/public/newtxtt; \
+	mv newtxtt/enc fonts/enc/dvips/newtxtt; \
+	mv newtxtt/map fonts/map/dvips/newtxtt; \
+	mv newtxtt/README doc/fonts/newtxtt/; \
+	rmdir newtxtt; \
+	zip -X -r newtxtt.tds.zip doc tex fonts; \
+	unzip -tq newtxtt.tds.zip; \
+	mv newtxtt.tds.zip "$(abspath $@)"
