@@ -1,7 +1,7 @@
 # newtxtt 1.060 2026-11-20 #
 
 This repository documents the work done on November 20, 2026, starting with
-`newtxtt 1.059 2024-03-12`, the last release authored by Michal Sharpe, the
+`newtxtt 1.059 2024-03-12`, the last release authored by Michael Sharpe, the
 creator of the `newtxtt` package, to produce `newtxtt 1.060 2026-11-20`.
 
 The version `1.059` was broken with TS1 encoding ("TeX companion fonts") and
@@ -23,7 +23,7 @@ For a detailed list of all improvements refer to
 The `newtxtt` package is currently (November 20, 2026) without maintainer.
 
 The repository https://github.com/LaTeX-Package-Repositories/msharpe
-coordinates the maintenance of the packages originally by Michael Sharpe.
+coordinates the maintenance of the packages originally authored by Michael Sharpe.
 As the owner of this GitHub repository will not take over maintenance
 please use https://github.com/LaTeX-Package-Repositories/msharpe/issues
 as the issue tracker.
@@ -42,7 +42,7 @@ It is the latter which got uploaded to CTAN as `1.060`.
 Here is some info if someone takes over maintenance and the
 LaTeX-Package-Repositories version is still at `1.060`.  The directory
 `tools/` contain some Python scripts and some audit outputs which
-where used to ensure in particular that no glyph metric was modified
+were used to ensure in particular that no glyph metric was modified
 during the fixes.  The original `1.059` release is embedded in two
 ways in the repository: first there is the archived file
 [`newtxtt-1.059-2024-03-12.zip`](newtxtt-1.059-2024-03-12.zip),
