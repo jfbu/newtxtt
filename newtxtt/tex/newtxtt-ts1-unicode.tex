@@ -4,8 +4,8 @@
 % Scope mappings to the companion TFM names, not to other fonts using the
 % same PostScript glyph names.  The five zero styles share these mappings.
 \ifdefined\pdfglyphtounicode
-  \ifdefined\newtxtt@ts1unicode@loaded\else
-    \gdef\newtxtt@ts1unicode@loaded{}%
+  \ifdefined\newtxtt@tsoneunicode@loaded\else
+    \global\let\newtxtt@tsoneunicode@loaded\relax
     \begingroup
       % FD loading can occur in verbatim or other active-character contexts.
       % Normalize the delimiters of \@tfor before tokenizing the loops.
