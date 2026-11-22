@@ -47,7 +47,7 @@ ctan: test-all $(sourcefiles) pdfdoc checkhiddenfiles
 	mv ctanbuild/newtxtt.zip CTAN/
 	@echo '********'
 	@echo 'New newtxtt.zip now moved to CTAN/ directory.'
-	@echo 'Checking the list of archived files for omiisions or additions... '
+	@echo 'Checking the list of archived files for omissions or additions... '
 	@unzip -Z1 CTAN/newtxtt.zip | sed '/\/$$/d' | LC_ALL=C sort | diff -u tools/file-list.txt -
 	@echo '... ok'
 	@echo 'Checking archive integrity...'
@@ -55,12 +55,9 @@ ctan: test-all $(sourcefiles) pdfdoc checkhiddenfiles
 	@echo '... ok'
 	@echo '********'
 	@echo 'CHECK ctanbuild/newtxtt-doc.fls FOR ANY INCONGRUITY.'
-	@echo 'Copy the newtxttt.zip to some other place for CTAN upload.'
-	@echo 'Rename the one in CTAN to hold the version number in its filename.'
-	@echo 'Prepare the CTAN announcement, if any.'
-	@echo 'Execute .gettimestamps.sh to store the time-stamps,'
-	@echo 'then commit the current repository state with the'
-	@echo 'announcement as commit message body.'
+	@echo 'Now CTAN holds newtxtt.zip.  Execute'
+	@echo '    make CTAN/newtxtt.tds.zip'
+	@echo 'if a tds.zip is wished for (useful for local installation)'
 	@echo '********'
 
 # Regenerate the font regression test sources and expected glyph data.
