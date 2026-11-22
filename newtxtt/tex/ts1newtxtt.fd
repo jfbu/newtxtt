@@ -1,5 +1,5 @@
 \ProvidesFile{ts1newtxtt.fd}
-	[2026-11-20]
+    [2026-11-22 v1.061  Font definitions for TS1/newtxtt]
 
 \input{newtxtt-ts1-unicode.tex}
 

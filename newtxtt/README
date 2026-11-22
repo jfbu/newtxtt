@@ -1,7 +1,7 @@
 This small package provides a means of accessing all features (plus scaling) of an extension of the txfont typewriter fonts as a typewriter font family to accompany any other chosen font packages. These are serifed typewriter faces that are taller and heavier than Latin Modern Typewriter and much heavier than Courier.
 
 
-Current version: 1.060, 2026-11-20
+Current version: 1.061, 2026-11-22
 
 Important notice: The package author, Michael Sharpe, has announced
 that he is stepping down as maintainer.
@@ -20,6 +20,9 @@ for the details of GPL. The special exception is as follows:
 The support files are subject to the LaTeX Project Public License. See 
 http://www.ctan.org/license/lppl1.3
 for the details of that license.
+
+Changes in version 1.061
+Fix a technical error in the 1.060 added newtxtt-ts1-unicode.tex file.
 
 Changes in version 1.060
 Correct TS1 font selection, fix missing T1 and TS1 character
