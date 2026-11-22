@@ -11,13 +11,14 @@ echo "Building pdf in newtxtt/doc with TEXINPUTS=\".:..//:\" ..."
 
 cd newtxtt/doc
 
-# export TEXINPUTS="./subdirectory//:${TEXINPUTS:-}:"
+# export shell variables, locations are relative to where
+# (pdf)latex is exercised
 
-export TEXINPUTS=".:..//:"
-export TFMFONTS=".:..//:"
-export T1FONTS=".:..//:"
-export ENCFONTS=".:..//:"
-export TEXFONTMAPS=".:..//:"
+export TEXINPUTS=".:../tex//:"
+export TFMFONTS="../tfm//:"
+export T1FONTS="../type1//:"
+export ENCFONTS="../enc//:"
+export TEXFONTMAPS="../map//:"
 
 latexmk -halt-on-error -interaction=batchmode -pdf newtxtt-doc.tex
 
