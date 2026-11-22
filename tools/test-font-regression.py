@@ -2,23 +2,27 @@
 """Exercise newtxtt with pdfLaTeX, checking actual PDF font and glyph selection.
 
 Requires Python 3, pypdf, and a working pdfLaTeX installation with T1/TS1.
-Runs in temporary directories; uses the checkout, not installed newtxtt files.
-Run from the repository root: python3 tools/test-latex.py
+Uses the checkout, not installed newtxtt files.
+Generate fixtures explicitly: python3 tools/test-font-regression.py --generate
+Run checked-in fixtures: python3 tools/test-font-regression.py
+Sources, expectations and textual results are retained under tests/.
 
 U+2260 (not equal) is not a T1 or TS1 text symbol; it is outside this test.
 In pdfLaTeX it can be represented by the math command \\ensuremath{\\neq}.
 """
 
+import argparse
+import json
 import os
 from pathlib import Path
 import re
 import subprocess
-import tempfile
 
 from pypdf import PdfReader
 
 
 ROOT = Path(__file__).resolve().parents[1] / 'newtxtt'
+TESTS = ROOT.parent / 'tests'
 SHAPES = [('m', 'n', 'newtcxtt'), ('m', 'sl', 'newtcxsl'),
           ('b', 'n', 'newtcxbtt'), ('b', 'sl', 'newtcxbsl')]
 # Check the character semantics independently of the distributed encoding names.
@@ -81,7 +85,7 @@ def glyphs(page):
                     yield from ((metric, byte) for byte in string.original_bytes)
 
 
-def run_case(directory, env, family, zero, quotes, tests):
+def generate_case(family, zero, quotes, tests):
     option = family + ',zerostyle=' + zero + (',straightquotes' if quotes else '')
     source = [r'\pdfmapfile{=newtxtt.map}', r'\input{glyphtounicode.tex}', r'\documentclass{article}',
               r'\usepackage[TS1,T1]{fontenc}', r'\usepackage[' + option + r']{newtxtt}',
@@ -104,72 +108,98 @@ def run_case(directory, env, family, zero, quotes, tests):
             expected.append((r'\textcompwordmark', base + suffix + zero + ('q' if quotes else ''), 23, None))
     source.extend([r'\normalfont\setcounter{page}{1}',
                    r'\begin{itemize}\item Item\end{itemize}', r'\end{document}'])
-    (directory / 'test.tex').write_text('\n'.join(source) + '\n')
-    proc = subprocess.run(['pdflatex', '-halt-on-error', '-interaction=nonstopmode',
-                           '-recorder', 'test.tex'], cwd=directory, env=env,
-                          stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
-    if proc.returncode or re.search(r'Missing character|LaTeX Font Warning', proc.stdout):
-        raise RuntimeError(option + '\n' + proc.stdout)
-    # Ensure the package and both encoding-specific FD selections are local.
-    inputs = (directory / 'test.fls').read_text().splitlines()
     name = 'newtxttz' if family == 'ttzdefault' else 'newtxtt'
-    for filename in ('newtxtt.sty', 't1' + name + '.fd', 'ts1' + name + '.fd'):
-        if not any(line.startswith('INPUT ') and Path(line[6:]).resolve() == ROOT / 'tex' / filename
-                   for line in inputs):
-            raise RuntimeError(f'{option}: did not load local {filename}')
-    reader = PdfReader(directory / 'test.pdf')
-    if len(reader.pages) != len(expected) + 1:
-        raise RuntimeError(f'{option}: unexpected page count')
-    for page, (label, metric, slot, unicode) in zip(reader.pages, expected):
-        actual = list(glyphs(page))
-        if (metric, slot) not in actual:
-            raise RuntimeError(f'{option}: {label}: expected {metric}/{slot}, got {actual}')
-        if unicode is not None and page.extract_text().strip() != unicode:
-            raise RuntimeError(f'{option}: {label}: incorrect Unicode {page.extract_text()!r}')
-    if ('newtcxtt' + zero, 136) not in list(glyphs(reader.pages[-1])):
-        raise RuntimeError(f'{option}: itemize did not select the companion bullet')
-    return len(expected)
+    expected.append(('itemize', 'newtcxtt' + zero, 136, None))
+    stem = f'generated-{family}-{zero}-{int(quotes)}'
+    write_fixture(stem, source, name, True, expected)
 
 
-def main():
-    env = environment()
-    tests = cases(env)
-    count = 0
-    with tempfile.TemporaryDirectory(prefix='newtxtt-test-') as temp:
-        directory = Path(temp)
-        for family in ('ttdefault', 'ttzdefault'):
-            for zero in 'abcde':
-                for quotes in (False, True):
-                    count += run_case(directory, env, family, zero, quotes, tests)
-                    print(f'{family}, zerostyle={zero}, straightquotes={quotes}: passed', flush=True)
-        for family in ('newtxtt', 'newtxttz'):
-            test_direct_nfss(directory, env, family)
-    print(f'{count - 140} TS1 command/shape checks, 120 T1 wordmark checks, '
-          '20 verbatim checks, 20 itemize checks and 2 direct NFSS checks passed.')
-
-
-def test_direct_nfss(directory, env, family):
+def generate_direct_nfss(family):
     source = [r'\pdfmapfile{=newtxtt.map}', r'\input{glyphtounicode.tex}', r'\documentclass{article}',
               r'\usepackage[TS1,T1]{fontenc}', r'\pdfgentounicode=1', r'\tracinglostchars=3',
               r'\begin{document}', r'\shipout\hbox{\usefont{T1}{' + family + r'}{m}{n}\textcopyleft}',
               r'\end{document}']
-    (directory / 'direct.tex').write_text('\n'.join(source) + '\n')
+    write_fixture('generated-direct-' + family, source, family, False,
+                  [(r'\textcopyleft', 'newtcxtta', 171, '🄯')])
+
+
+def write_fixture(stem, source, family, package, expected):
+    (TESTS / (stem + '.tex')).write_text('\n'.join(source) + '\n', encoding='utf-8')
+    # First line describes the FD requirements; remaining lines describe pages.
+    records = [dict(family=family, package=package)] + expected
+    (TESTS / (stem + '.expected')).write_text(
+        ''.join(json.dumps(record, ensure_ascii=False) + '\n' for record in records),
+        encoding='utf-8')
+
+
+def generate(env):
+    TESTS.mkdir(exist_ok=True)
+    tests = cases(env)
+    for family in ('ttdefault', 'ttzdefault'):
+        for zero in 'abcde':
+            for quotes in (False, True):
+                generate_case(family, zero, quotes, tests)
+    for family in ('newtxtt', 'newtxttz'):
+        generate_direct_nfss(family)
+
+
+def run_case(spec, env):
+    stem = spec.stem
+    metadata, *expected = [json.loads(line) for line in spec.read_text(encoding='utf-8').splitlines()]
+    result = []
+    errors = []
     proc = subprocess.run(['pdflatex', '-halt-on-error', '-interaction=nonstopmode',
-                           '-recorder', 'direct.tex'], cwd=directory, env=env,
+                           '-recorder', stem + '.tex'], cwd=TESTS, env=env,
                           stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
     if proc.returncode or re.search(r'Missing character|LaTeX Font Warning', proc.stdout):
-        raise RuntimeError(f'{family} direct NFSS\n' + proc.stdout)
-    inputs = (directory / 'direct.fls').read_text().splitlines()
-    if any(line.startswith('INPUT ') and Path(line[6:]).name == 'newtxtt.sty' for line in inputs):
-        raise RuntimeError('Direct NFSS test unexpectedly loaded newtxtt.sty')
-    for filename in ('t1' + family + '.fd', 'ts1' + family + '.fd'):
-        if not any(line.startswith('INPUT ') and Path(line[6:]).resolve() == ROOT / 'tex' / filename
-                   for line in inputs):
-            raise RuntimeError(f'{family}: did not load local {filename}')
-    page = PdfReader(directory / 'direct.pdf').pages[0]
-    if list(glyphs(page)) != [('newtcxtta', 171)] or page.extract_text().strip() != '🄯':
-        raise RuntimeError(f'{family}: incorrect direct NFSS copyleft glyph or Unicode')
-    print(f'{family}, direct NFSS: passed', flush=True)
+        errors.append('Compilation failed or reported missing glyphs/font warnings')
+    else:
+        inputs = (TESTS / (stem + '.fls')).read_text().splitlines()
+        paths = {(TESTS / line[6:]).resolve() for line in inputs if line.startswith('INPUT ')}
+        family = metadata['family']
+        required = ['t1' + family + '.fd', 'ts1' + family + '.fd', 'newtxtt-ts1-unicode.tex']
+        if metadata['package']:
+            required.append('newtxtt.sty')
+        elif any(path.name == 'newtxtt.sty' for path in paths):
+            errors.append('Direct NFSS test unexpectedly loaded newtxtt.sty')
+        for filename in required:
+            if ROOT / 'tex' / filename not in paths:
+                errors.append('Did not load local ' + filename)
+        reader = PdfReader(TESTS / (stem + '.pdf'))
+        if len(reader.pages) != len(expected):
+            errors.append(f'Expected {len(expected)} pages, got {len(reader.pages)}')
+        for number, (page, (label, metric, slot, unicode)) in enumerate(zip(reader.pages, expected), 1):
+            actual = list(glyphs(page))
+            extracted = page.extract_text().strip() if unicode is not None else None
+            result.append(json.dumps([number, label, actual, extracted], ensure_ascii=False))
+            if (metric, slot) not in actual or (not metadata['package'] and actual != [(metric, slot)]):
+                errors.append(f'Page {number}: {label}: expected {metric}/{slot}, got {actual}')
+            if unicode is not None and extracted != unicode:
+                errors.append(f'Page {number}: {label}: incorrect Unicode {extracted!r}')
+    result.extend('FAIL: ' + error for error in errors)
+    (TESTS / (stem + '.txt')).write_text('\n'.join(result) + '\n', encoding='utf-8')
+    if errors:
+        print(f'{stem}: FAILED (see tests/{stem}.txt and .log)', flush=True)
+    else:
+        print(f'{stem}: passed', flush=True)
+    return not errors
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--generate', action='store_true', help='regenerate test sources and expectations only')
+    args = parser.parse_args()
+    env = environment()
+    if args.generate:
+        generate(env)
+        return
+    specs = sorted(TESTS.glob('generated-*.expected'))
+    if not specs:
+        raise RuntimeError('No checked-in tests found; run --generate explicitly')
+    results = [run_case(spec, env) for spec in specs]
+    print(f'{sum(results)}/{len(results)} generated test documents passed.')
+    if not all(results):
+        raise SystemExit(1)
 
 
 if __name__ == '__main__':

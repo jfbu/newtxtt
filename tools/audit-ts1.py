@@ -84,12 +84,14 @@ def main():
     print(f'Checked {sum(map(len, missing.values()))} metric/vector/map combinations.')
     for slots, fonts in missing.items():
         print(f'Unencoded kernel-declared slots ({len(fonts)} metrics):')
+        if not slots:
+            print('  none')
         for slot in slots:
             print(f'  {slot:3d}  {required[slot]}')
     for pfb, widths in outlines.items():
         encoded_names = set().union(*vectors.values())
         print(f'{pfb}: outlines unused by all five vectors:')
-        print('  ' + ', '.join(sorted(widths.keys() - encoded_names)))
+        print('  ' + (', '.join(sorted(widths.keys() - encoded_names)) or 'none'))
     for error in errors:
         print('ERROR:', error)
     print(f'{len(errors)} consistency errors.')

@@ -1,7 +1,8 @@
 SHELL := /bin/bash
 sourcefiles := $(shell find newtxtt -type f)
 
-.PHONY: pdfdoc ctan checkfiles cleanaux cleanbuild test original
+.PHONY: pdfdoc ctan checkfiles cleanaux cleanbuild original
+.PHONY: generate-font-tests test-font-regression test-audit test-all
 
 checkhiddenfiles:
 	@hidden=$$(find newtxtt -name '.*' -print); \
@@ -23,7 +24,7 @@ pdfdoc:
 cleanaux:
 	rm -f newtxtt/doc/newtxtt-doc.{aux,fdb_latexmk,log,fls}
 
-ctan: test $(sourcefiles) pdfdoc checkhiddenfiles
+ctan: test-all $(sourcefiles) pdfdoc checkhiddenfiles
 	@echo 'Removing CTAN/newtxtt.zip if it exists (or not...).'
 	rm -fr CTAN/newtxtt.zip
 	@echo 'Removing all of ctanbuild/newtxtt'
@@ -62,14 +63,49 @@ ctan: test $(sourcefiles) pdfdoc checkhiddenfiles
 	@echo 'announcement as commit message body.'
 	@echo '********'
 
-test:
+# Regenerate the font regression test sources and expected glyph data.
+# Run only when intentionally updating the test coverage.
+generate-font-tests:
+	python3 tools/test-font-regression.py --generate
+
+# Audit font files using Python and fontTools, without compiling LaTeX.
+# Check consistency between TFM metrics, encoding vectors, Type 1 outlines,
+# map entries and FD declarations, and preservation of original font data.
+test-audit:
 	@echo '********'
-	@echo 'Running regression tests (use make original first if needed)...'
-	python3 tools/audit-ts1.py
-	python3 tools/audit-distribution.py --reference original/newtxtt
-	python3 tools/test-latex.py
+	@echo 'Auditing font files (use make original first if needed)...'
+	@# tee saves and displays reports; pipefail propagates Python errors.
+	@# TS1 coverage against ts1enc.def, metrics, encodings, outlines and maps.
+	set -o pipefail; python3 tools/audit-ts1.py | tee tools/ts1-audit.txt
+	@# T1/TS1 consistency and FD selections; --reference checks original
+	@# metrics, glyph programs, subroutines, font properties and map.
+	set -o pipefail; python3 tools/audit-distribution.py --reference original/newtxtt | tee tools/distribution-audit.txt
+	@# --exit-code fails if tracked reports differ from the Git index.
+	@if ! git diff --exit-code -- tools/ts1-audit.txt tools/distribution-audit.txt; then \
+	    echo -e '\033[1;31mERROR: Font audit results have changed.\033[0m' >&2; \
+	    exit 1; \
+	fi
 	@echo '... done'
 	@echo '********'
+
+# Compile the checked-in test sources with pdfLaTeX.
+# Use Python and pypdf to check PDF font selections, glyph codes and Unicode
+# extraction against expected results. Record actual results for comparison
+# with Git-controlled baselines; leave sources and expectations unchanged.
+test-font-regression:
+	@echo '********'
+	@echo 'Running font regression tests...'
+	python3 tools/test-font-regression.py
+	@# --exit-code fails if tracked textual results differ from the Git index.
+	@if ! git diff --exit-code -- 'tests/*.txt'; then \
+	    echo -e '\033[1;31mERROR: Font regression results have changed.\033[0m' >&2; \
+	    exit 1; \
+	fi
+	@echo '... done'
+	@echo '********'
+
+# Run both categories of checks before packaging.
+test-all: test-audit test-font-regression
 
 cleanbuild:
 	rm -fr ctanbuild/newtxtt
@@ -102,3 +138,4 @@ CTAN/newtxtt.tds.zip: CTAN/newtxtt.zip
 	unzip -tq ctanbuild/tds/newtxtt.tds.zip
 	mv ctanbuild/tds/newtxtt.tds.zip CTAN/newtxtt.tds.zip
 	rm -rf ctanbuild/tds
+

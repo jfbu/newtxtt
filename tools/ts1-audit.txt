@@ -1,7 +1,8 @@
 Checked 20 metric/vector/map combinations.
 Unencoded kernel-declared slots (20 metrics):
+  none
 newtcxtt: outlines unused by all five vectors:
-  
+  none
 newtcxbtt: outlines unused by all five vectors:
-  
+  none
 0 consistency errors.
