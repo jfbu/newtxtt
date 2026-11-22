@@ -4,9 +4,7 @@ This small package provides a means of accessing all features (plus scaling) of 
 Current version: 1.060, 2026-11-20
 
 Important notice: The package author, Michael Sharpe, has announced
-that he is stepping down as maintainer. A provisional repository
-has been set up at https://github.com/jfbu/newtxtt, which
-records the patches leading from version 1.059 to version 1.060.
+that he is stepping down as maintainer.
 
 As the fonts on which these were based are licensed under GPL 3.0, so are the fonts in 
 this package. More specifically, the fonts in this package are covered by the GNU 
@@ -73,6 +71,6 @@ Changes in version 1.02
 Changes in version 1.01
 Added variant versions of the tfm files which are not monospaced though they share the same glyphs and glyph widths. The variant version permits hyphenation and has spacing more like a text font, so that it can be used to achieve right-justified blocks of text with a typewritten appearance. See the documentation for details.
 
-Please send comments and bug reports or suggestions for improvement to
+Please send comments and bug reports or suggestions for improvement by opening an issue at 
 
-msharpe at ucsd dot edu
+https://github.com/LaTeX-Package-Repositories/msharpe/issues
