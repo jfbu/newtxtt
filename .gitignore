@@ -3,3 +3,8 @@
 /ctanbuild/
 /CTAN/*.zip
 c01.md
+/newtxtt/doc/newtxtt-doc.aux
+/newtxtt/doc/newtxtt-doc.fdb_latexmk
+/newtxtt/doc/newtxtt-doc.fls
+/newtxtt/doc/newtxtt-doc.log
+/newtxtt/doc/newtxtt-doc.out
