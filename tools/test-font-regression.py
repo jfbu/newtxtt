@@ -9,6 +9,11 @@ Sources, expectations and textual results are retained under tests/.
 
 U+2260 (not equal) is not a T1 or TS1 text symbol; it is outside this test.
 In pdfLaTeX it can be represented by the math command \\ensuremath{\\neq}.
+
+Exercised by make test-font-regression, which first purges from tests/ all aux
+files (inclusive of the .fls files from -recorder) to always start from a
+clean state (even if latexmk was used manually on a specific test).
+
 """
 
 import argparse

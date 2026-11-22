@@ -42,23 +42,40 @@ https://github.com/LaTeX-Package-Repositories/msharpe/tree/main/newtxtt.
 
 It is the latter which got uploaded to CTAN as `1.060`.
 
-Here is some info if someone takes over maintenance and the
-LaTeX-Package-Repositories version is still at `1.060`.  The directory
-`tools/` contain some Python scripts and some audit outputs which
-were used to ensure in particular that no glyph metric was modified
-during the fixes.  The original `1.059` release is embedded in two
-ways in the repository: first there is the archived file
-[`newtxtt-1.059-2024-03-12.zip`](newtxtt-1.059-2024-03-12.zip),
-second the initial commit (tag `1.059-2024-03-12`) holds in
-`newtxtt/` that release.
+## Testing
 
-For the Makefile `test` target to work, it is needed to first populate a
-directory `original/` with the original release which can be done from
-unzipping with destination `original/` the
-[`newtxtt-1.059-2024-03-12.zip`](newtxtt-1.059-2024-03-12.zip) archive
-(so there will be `original/newtxtt/`).
+To run tests it is needed first to create and populate (once) an `original/`
+directory.  Create it, then execute `unzip -d original
+newtxtt-1.059-2024-03-12.zip`.  The original `1.059` release is also embedded
+in the Git history as the `newtxtt/` directory for the initial commit which is
+tagged `1.059-2024-03-12`.
 
-## Installation
+- Use `make test-all` to execute both test suites described below.  It is
+  done automatically by `make ctan`.
+
+- Use `make test-audit` to check consistency between TFM metrics, encoding
+  vectors, Type 1 outlines, map entries and FD declarations, and preservation
+  of original font data from `1.059`.
+
+- Use `make test-font-regression` to compile and verify the checked-in tests
+  in `tests/`.  First, PDF files are obtained from `pdflatex` compilation.
+  Then `.txt` files recording (in Python lists of strings) the observed PDF
+  glyphs and, where checked, Unicode text, are produced using `pypdf`.  They
+  are compared with the data in the `*.expected` files.  Any difference or
+  build failure produces a nonzero exit status.  Additionally, `git diff --
+  tests/*.txt` is executed at the end of the run, showing differences for
+  those `*.txt` files which were generated.
+
+Only the font regression suite uses the directory `tests/`.  The generated
+documents are independently compilable. Their names encode the family option,
+zero style and straightquotes flag (`0` or `1`). The two
+`generated-direct-*.tex` documents exercise direct NFSS use.  Use `make
+generate-font-tests` only to regenerate the test fixtures.  This uses the
+installed `ts1enc.def` to enumerate TS1 commands. Review the changes to the
+`.tex` and `.expected` files, then run the tests again before committing
+updated results, inclusive of the `.txt` files.
+
+## Installation in TEXMFHOME
 
 First, execute `make CTAN/newtxtt.tds.zip`.
 

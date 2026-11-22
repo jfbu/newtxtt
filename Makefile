@@ -1,7 +1,7 @@
 SHELL := /bin/bash
 sourcefiles := $(shell find newtxtt -type f)
 
-.PHONY: pdfdoc ctan checkfiles cleanaux cleanbuild original
+.PHONY: pdfdoc ctan checkfiles cleandoc cleantests cleanbuild original
 .PHONY: generate-font-tests test-font-regression test-audit test-all
 
 checkhiddenfiles:
@@ -21,8 +21,11 @@ pdfdoc:
 	@echo 'Producing newtxtt-doc.pdf in newtxtt/doc'
 	./dopdfdoc.sh
 
-cleanaux:
+cleandoc:
 	rm -f newtxtt/doc/newtxtt-doc.{aux,fdb_latexmk,log,fls}
+
+cleantests:
+	rm -f tests/*.{aux,fdb_latexmk,log,fls,pdf}
 
 ctan: test-all $(sourcefiles) pdfdoc checkhiddenfiles
 	@echo 'Removing CTAN/newtxtt.zip if it exists (or not...).'
@@ -91,6 +94,8 @@ test-audit:
 # with Git-controlled baselines; leave sources and expectations unchanged.
 test-font-regression:
 	@echo '********'
+	@echo 'Cleaning auxiliary files in tests/'
+	rm -f tests/*.{aux,fdb_latexmk,log,fls,pdf}
 	@echo 'Running font regression tests...'
 	python3 tools/test-font-regression.py
 	@# --exit-code fails if tracked textual results differ from the Git index.

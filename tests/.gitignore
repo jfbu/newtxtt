@@ -3,5 +3,3 @@
 *.log
 *.pdf
 *.fdb_latexmk
-*.synctex.gz
-missfont.log
