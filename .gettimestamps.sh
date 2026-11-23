@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Use UTC when reading and formatting file timestamps.
+export TZ=UTC0
+
 case `uname -s` in
     "Linux" )
         MYDATEFORTOUCH() {
@@ -18,7 +21,11 @@ case `uname -s` in
         ;;
 esac
 
-echo "#!/bin/sh" > .resettimestamps.sh
+# Use UTC also when restoring the saved timestamps.
+{
+    echo '#!/bin/sh'
+    echo 'export TZ=UTC0'
+} > .resettimestamps.sh
 
 IFS='
 '
