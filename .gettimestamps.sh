@@ -13,7 +13,7 @@ case `uname -s` in
         ;;
     * )
         MYDATEFORTOUCH() {
-            197001010000.00
+            echo 197001010000.00
         }
         ;;
 esac
