@@ -112,6 +112,14 @@ test-all: test-audit test-font-regression
 cleanbuild:
 	rm -fr ctanbuild/newtxtt
 
+CTAN/newtxtt.zip:
+	@echo -ne '\033[1;31m"CTAN/newtxtt.zip" is missing. ' >&2
+	@echo -e 'Execute "make ctan" to produce it.\033[0m' >&2
+	@echo 'It runs all tests but does not rebuild the pdf doc if'
+	@echo 'the latter appears to be up-to-date. To force the latter'
+	@echo 'rebuild, do "make cleandoc" before "make ctan".'
+	@exit 1
+
 # Build a TDS archive from the already validated CTAN archive.
 # rm -rf: remove the previous staging tree recursively, if present.
 # unzip -q -d: extract quietly into the specified directory.
