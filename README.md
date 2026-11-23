@@ -1,4 +1,4 @@
-# newtxtt 1.060 2026-11-20 and 1.061 2026-11-22 #
+# newtxtt 1.060 2026-11-20 #
 
 This repository documents the work done on November 20, 2026, starting with
 `newtxtt 1.059 2024-03-12`, the last release authored by Michael Sharpe, the
@@ -20,6 +20,10 @@ For a detailed list of all improvements refer to
 
 Unfortunately, a TeX coding error by the AI assistant escaped the human
 supervisor's attention.  This was fixed in the follow-up release 1.061.
+
+1.062 (2026-11-23) restored the "Changes in version 1.059" entry in
+`newtxtt/README`, accidentally deleted in 1.060, and the original 2024
+modification times of unchanged files in the `zip` archive.
 
 ## Maintenance
 
