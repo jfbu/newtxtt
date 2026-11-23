@@ -1,5 +1,5 @@
 \ProvidesFile{t1newtxtt.fd}
-    [2026-11-22 v1.061  Font definitions for T1/newtxtt]
+    [2026-11-23 v1.062  Font definitions for T1/newtxtt]
 
 % Register full TS1 coverage even when newtxtt.sty is not loaded.
 \ifdefined\DeclareEncodingSubset
